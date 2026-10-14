@@ -1,6 +1,7 @@
 import datetime
 import logging
 import math
+import os
 import time
 import torch
 import shutil
@@ -265,7 +266,9 @@ def train_pipeline(root_path):
     model.save(epoch=-1, current_iter=-1)  # -1 stands for the latest
     if opt.get('val') is not None:
         for val_loader in val_loaders:
-            model.validation(val_loader, current_iter, tb_logger, opt['val']['save_img'])
+            model.validation(
+                val_loader, current_iter, tb_logger,
+                wandb_logger=wandb_logger, save_img=opt['val']['save_img'])
     if tb_logger:
         tb_logger.close()
     if wandb_logger:

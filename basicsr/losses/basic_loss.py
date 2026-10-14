@@ -5,7 +5,6 @@ from torch.nn import functional as F
 # from basicsr.archs.vgg_arch import VGGFeatureExtractor
 from basicsr.utils.registry import LOSS_REGISTRY
 from .loss_util import weighted_loss
-import pyiqa
 from basicsr.archs.arch_util import flow_warp
 _reduction_modes = ['none', 'mean', 'sum']
 
@@ -30,6 +29,8 @@ class LPIPSLoss(nn.Module):
     """
     def __init__(self, loss_weight = 1.0):
         super(LPIPSLoss, self).__init__()
+        # Optional: the released STDANetPP configs use L1Loss, not LPIPSLoss.
+        import pyiqa
         self.model = pyiqa.create_metric('lpips-vgg', as_loss=True)
         self.loss_weight = loss_weight
 

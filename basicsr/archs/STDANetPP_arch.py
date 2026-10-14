@@ -74,7 +74,7 @@ class STDANetPP(nn.Module):
         modules = ['backward_1', 'forward_1', 'backward_2', 'forward_2']
         for i, module in enumerate(modules):
             if torch.cuda.is_available():
-                self.deform_align[module] = DeformableAttnBlocks(n_heads=6,n_points=8,d_model=mid_channels)
+                self.deform_align[module] = DeformableAttnBlocks(n_heads=6,n_points=8,d_model=mid_channels)  # n_points=8 là của code + pretrained, =4 là theo paper
                 self.ltff[module] = LTFF(stride=self.stride,mid_channels=mid_channels)
             
             self.backbone_res[module] = RSTBWithInputConv(
@@ -132,7 +132,7 @@ class STDANetPP(nn.Module):
                           'be used with CUDA enabled. Alignment is skipped now.')
 
     def check_if_mirror_extended(self, lqs):
-        
+        self.is_mirror_extended = False
 
         if lqs.size(1) % 2 == 0:
             lqs_1, lqs_2 = torch.chunk(lqs, 2, dim=1)

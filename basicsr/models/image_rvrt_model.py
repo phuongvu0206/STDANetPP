@@ -566,8 +566,7 @@ class ModelVRT(BaseModel):
 
         cnt = 0
         metric_data = dict()
-        show_dir_name = f"results/{self.opt['name']}"
-        os.makedirs(show_dir_name, exist_ok=True)
+        show_dir_name = self.opt['path']['visualization']
         for idx, val_data in enumerate(dataloader):
             
             filenames = val_data["folder"]
@@ -621,17 +620,10 @@ class ModelVRT(BaseModel):
                 cnt += 1
                 
             # show_lqs = torchvision.utils.make_grid(visuals['result'][:,:16,...].view(b*16,c,h,w),4)
-            for i in range(t):
-                os.makedirs(osp.join(show_dir_name,"visualization", filenames[0]), exist_ok=True)
-                torchvision.utils.save_image(visuals['result'][:,i,...],osp.join(show_dir_name,"visualization", filenames[0], f'{i:06d}.png'))
-
-
-
-            
-
-
-
-             
+            if save_img:
+                for i in range(t):
+                    os.makedirs(osp.join(show_dir_name,"visualization", filenames[0]), exist_ok=True)
+                    torchvision.utils.save_image(visuals['result'][:,i,...],osp.join(show_dir_name,"visualization", filenames[0], f'{i:06d}.png'))
 
             pbar.update(1)
             
